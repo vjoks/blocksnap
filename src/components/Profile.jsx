@@ -35,7 +35,7 @@ export default class Profile extends Component {
     const { handleSignOut } = this.props;
     const { person } = this.state;
     const { username } = this.state;
-   
+  
     return (
       !isSignInPending() && person ?
       <div className="container">
@@ -72,7 +72,7 @@ export default class Profile extends Component {
                   />
                 </div>
                 <div className="col-md-12">
-                  {this.state.newimage}
+                  {this.state.newImage}
                 </div>
                 <div className="col-md-12 text-right">
                   <button
@@ -84,14 +84,9 @@ export default class Profile extends Component {
                 </div>
               </div>
             }
-            <div className="col-md-12 images">
-            {this.state.isLoading && <span>Loading...</span>}
-            {this.state.images.map((image) => (
-                <div className="image" key={image.id}>
-                  {image.text}
-                </div>
-                )
-            )}
+            <div className="col-md-12 images" id="imageDivs">
+              {this.state.isLoading && <span>Loading...</span>}
+              {this.state.images.forEach((image) => { this.drawCanvas(image); })}
             </div>
           </div>
         </div>
@@ -106,6 +101,21 @@ export default class Profile extends Component {
     });
   }
 
+  drawCanvas(imageData) {
+    var img = new Image();
+    var imageDivs = document.getElementById("imageDivs");
+    img.onload = function() {
+      var canvas = document.getElementById("canvas" + imageData.id);
+      if (!canvas) {
+        canvas = document.createElement("canvas");
+        canvas.id = "canvas" + imageData.id;
+        imageDivs.appendChild(canvas);
+      }
+      var context = canvas.getContext('2d');
+      context.drawImage(img, 0, 0);
+    }
+    img.src = imageData.text;
+  }
 
   encodeImageFileAsURL(element) {
     var oldThis = this;
