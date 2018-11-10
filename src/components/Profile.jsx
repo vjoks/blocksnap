@@ -101,29 +101,9 @@ export default class Profile extends Component {
     });
   }
 
-  /*drawCanvas(imageData) {
-    var img = new Image();
-    var imageDivs = document.getElementById("imageDivs");
-    img.onload = function() {
-      var canvas = document.getElementById("canvas" + imageData.id);
-      if (!canvas) {
-        document.createElement("canvas");
-        canvas.id = "canvas" + imageData.id;
-        imageDivs.appendChild(canvas);
-      }
-      var context = canvas.getContext('2d');
-      try{
-        context.drawImage(img, 0, 0);
-      } catch(e) {
-        console.log(imageData.id + " failed to draw.");
-      }
-    }
-    img.src = imageData.text;
-  }*/
-
   drawCanvas(imageData) {
     var img = document.getElementById(imageData.id);
-    if (!img) {
+    if (img === null) {
       img = new Image();
       img.id = imageData.id;
       var imageDivs = document.getElementById("imageDivs");
