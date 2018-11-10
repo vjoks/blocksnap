@@ -13,6 +13,7 @@ import {
   getPublicKeyFromPrivate
 } from 'blockstack/lib/keys';
 import { Switch, Route } from 'react-router-dom';
+import { getFile } from 'blockstack/lib/storage';
 
 export default class App extends Component {
 
@@ -57,9 +58,21 @@ export default class App extends Component {
       handlePendingSignIn().then((userData) => {
         const privateKey = userData.appPrivateKey;
         const publicKey = getPublicKeyFromPrivate(privateKey);
-        putFile('public_key.txt', publicKey, { encrypt: false }).then(() => {
-          window.location = window.location.origin;
-        })
+        const options = { decrypt: false }
+        getFile('public_key.txt', options)
+          .then( () =>
+            {
+              console.log(" found public key");
+              window.location = window.location.origin;
+            }
+          )
+          .catch(() => {
+            console.log(" creating public_key.txt " + publicKey);
+            putFile('public_key.txt', publicKey, { encrypt: false }).then(() => {
+              window.location = window.location.origin;
+            })
+          })
+
       });
     }
   }
