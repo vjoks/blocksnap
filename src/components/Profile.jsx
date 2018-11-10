@@ -145,7 +145,7 @@ export default class Profile extends Component {
     }
 
     images.unshift(image);
-    const options = { encrypt: false };
+    const options = { encrypt: true };
     putFile('images.json', JSON.stringify(images), options)
       .then(() => {
         this.setState({
@@ -157,7 +157,7 @@ export default class Profile extends Component {
   fetchData() {
     this.setState({ isLoading: true })
     if (this.isLocal()) {
-      const options = { decrypt: false }
+      const options = { decrypt: true }
       getFile('images.json', options)
         .then((file) => {
           var images = JSON.parse(file || '[]')

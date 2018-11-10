@@ -145,4 +145,10 @@ a,a:focus,a:hover{
   height: 350px;
   background: #152B44;
 }
-
+.util-action.first {
+    webkit-box-shadow: inset -1px 0 0 0 #e5e5e5;
+    box-shadow: inset -1px 0 0 0 #e5e5e5;
+}
+.search-input {
+    border-radius: 30px;
+}
