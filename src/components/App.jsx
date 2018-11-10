@@ -7,7 +7,11 @@ import {
   redirectToSignIn,
   handlePendingSignIn,
   signUserOut,
+  putFile
 } from 'blockstack';
+import {
+  getPublicKeyFromPrivate
+} from 'blockstack/lib/keys';
 import { Switch, Route } from 'react-router-dom';
 
 export default class App extends Component {
@@ -51,7 +55,11 @@ export default class App extends Component {
   componentWillMount() {
     if (isSignInPending()) {
       handlePendingSignIn().then((userData) => {
-        window.location = window.location.origin;
+        const privateKey = userData.appPrivateKey;
+        const publicKey = getPublicKeyFromPrivate(privateKey);
+        putFile('public_key.txt', publicKey, { encrypt: false }).then(() => {
+          window.location = window.location.origin;
+        })
       });
     }
   }
