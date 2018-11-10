@@ -41,7 +41,19 @@ module.exports = {
         test: /\.(eot|woff|woff2|ttf|svg|png|jpe?g|gif)(\?\S*)?$/,
         loader: 'file-loader!url-loader',
       },
-      { test: /\.css$/, loader: 'style-loader!css-loader' }
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['react']
+            }
+          }
+        ],
+      }
     ]
   },
   plugins: [HtmlWebpackPluginConfig, ManifestAssetPlugin, IconAssetPlugin]
