@@ -1,4 +1,4 @@
-a,a:focus,a:hover{
+a,a:focus, a:hover{
     color:#fff;
 }
  html,body{
@@ -64,6 +64,7 @@ a,a:focus,a:hover{
 }
  .username{
     margin-left:20px;
+    color:#202020;
 }
 /* Scaffolding */
  .site-wrapper{
@@ -128,7 +129,9 @@ a,a:focus,a:hover{
 
 
 /**** CUSTOM ****/
-
+.root a{
+    color:#202020;
+}
 .user-nav {
   height: 60px;
   background: #4A90E2;
