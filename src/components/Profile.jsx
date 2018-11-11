@@ -14,6 +14,14 @@ export default class Profile extends Component {
   constructor(props) {
   	super(props);
 
+    const options = { decrypt: false }
+    getFile('public_key.txt', options)
+          .then( (data) =>
+            {
+              console.log("  render found public key : " + data);
+              this.state.public_key = data;
+            }
+          );
   	this.state = {
   	  person: {
   	  	name() {
@@ -27,7 +35,8 @@ export default class Profile extends Component {
       newimage: "",
       images: [],
       imageIndex: 0,
-      isLoading: false
+      isLoading: false,
+      public_key: ""
   	};
   }
 
@@ -35,6 +44,7 @@ export default class Profile extends Component {
     const { handleSignOut } = this.props;
     const { person } = this.state;
     const { username } = this.state;
+    const { public_key } = this.state;
   
     return (
       !isSignInPending() && person ?
@@ -56,7 +66,8 @@ export default class Profile extends Component {
                   <span>{username}</span>
                   {this.isLocal() &&
                     <span>
-                      &nbsp;|&nbsp;
+                      |&nbsp;
+                      {public_key} &nbsp;|&nbsp;
                       <a onClick={ handleSignOut.bind(this) }>(Logout)</a>
                     </span>
                   }
