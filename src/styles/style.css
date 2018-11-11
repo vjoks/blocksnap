@@ -129,7 +129,13 @@ a,a:focus, a:hover{
 
 
 /**** CUSTOM ****/
-
+.logo {
+    font-size: 28px;
+    padding-left: 150px;
+}
+a.logo:hover {
+    text-decoration: none;
+}
 .root a{
     color:#202020;
 }
@@ -156,7 +162,14 @@ a,a:focus, a:hover{
 .search-input {
     border-radius: 30px;
 }
+.img-link img {
+    max-width: 300px;
+}
 .img-link a:hover {
     background: #f0f0f0;
     transition: all 0.35s ease;
+}
+.ncss-input-container,
+.ncss-input-container input {
+    color: #8d8d8d;
 }
