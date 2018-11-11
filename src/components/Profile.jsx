@@ -7,6 +7,7 @@ import {
   putFile,
   lookupProfile
 } from 'blockstack';
+import { encryptECIES, decryptECIES } from 'blockstack/lib/encryption';
 
 const avatarFallbackImage = 'https://s3.amazonaws.com/onename/avatar-placeholder.png';
 
@@ -82,9 +83,6 @@ export default class Profile extends Component {
                     onChange={e => this.handleNewImageChange(e)}
                   />
                 </div>
-                <div className="col-md-12">
-                  {this.state.newImage}
-                </div>
                 <div className="col-md-12 text-right">
                   <button
                     className="btn btn-primary btn-lg"
@@ -93,6 +91,19 @@ export default class Profile extends Component {
                     Submit
                   </button>
                 </div>
+                <form className="share-image" onSubmit={e => this.validateUser(e)}>
+                  <label target="shareUser">Share with user:</label>
+                  <input name="shareUser" type="text" />
+                  <label target="imgNum">Image number to share:</label>
+                  <input type="number" name="imgNum" min="0" max={this.state.imageIndex} />
+                  <input type="submit" value="Check user" />
+                </form>
+
+                <form className="retrieve-image" onSubmit={e => this.retrieveFromUser(e)}>
+                  <label target="retrieveUser">Retrieve shared image from user:</label>
+                  <input name="retrieveUser" type="text" />
+                  <input type="submit" value="Retrieve image" />
+                </form>
               </div>
             }
             <div className="col-md-12 images" id="imageDivs">
@@ -104,6 +115,46 @@ export default class Profile extends Component {
       </div> : null
     );
     }
+
+    retrieveFromUser(event) {
+      var user = event.target.retrieveUser.value;
+      const options = { username: user, decrypt: true };
+      getFile('shareImage.img', options)
+        .then((file) => {
+          var newImage = JSON.parse(file || {});
+          this.saveNewImage(newImage);
+        })
+        .catch((error) => {
+          console.log('Did not find shared file from ' + user);
+        })
+    }
+
+  validateUser(event) {
+    var user = event.target.shareUser.value;
+    var imgNum = event.target.imgNum.value;
+    lookupProfile(user)
+        .then((profile) => {
+          const options = { username: user, decrypt: false };
+          getFile('public_key.txt', options)
+            .then((file) => {
+              var pkOther = file;
+              const cipherObject = encryptECIES(pkOther, JSON.stringify(this.state.images[imgNum]));
+              putFile('shareImage.img', cipherObject, { encrypt: false })
+                .then((file) => {
+                  console.log("Image shared with " + user);
+                })
+                .catch((error) => {
+                  console.log("Failed to share image.")
+                });
+            })
+            .catch((error) => {
+              console.log('Could not find public key of ' + user);
+            })
+        })
+        .catch((error) => {
+          console.log('Could not find user.');
+        })
+  }
 
   componentWillMount() {
     this.setState({
