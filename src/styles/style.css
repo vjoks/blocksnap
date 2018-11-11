@@ -7,7 +7,7 @@ a,a:focus,a:hover{
     /*background-color:#191b22;*/
 }
  body{
-    color:#fff
+    color:#fff;
 }
  .hide{
     display:none;
@@ -128,7 +128,9 @@ a,a:focus,a:hover{
 
 
 /**** CUSTOM ****/
-
+.bottom-dark {
+    background: #222222;
+}
 .user-nav {
   height: 60px;
   background: #4A90E2;
@@ -151,4 +153,8 @@ a,a:focus,a:hover{
 }
 .search-input {
     border-radius: 30px;
+}
+.img-link a:hover {
+    background: #f0f0f0;
+    transition: all 0.35s ease;
 }
