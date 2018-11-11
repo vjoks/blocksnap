@@ -136,6 +136,9 @@ a,a:focus, a:hover{
 a.logo:hover {
     text-decoration: none;
 }
+.root {
+    margin-top: 100px;
+}
 .root a{
     color:#202020;
 }
